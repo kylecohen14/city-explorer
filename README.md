@@ -1,4 +1,7 @@
 - NETLIFY URL = https://city-explorer-kyle.netlify.app/
+## whiteboard 
+![whiteboard](/mnt/c/Users/kylec/projects/codefellows/code301/lab_assignments/city-explorer/Screenshot (175).png)
+
 
 # Project Name.
 

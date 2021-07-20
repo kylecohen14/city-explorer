@@ -3,6 +3,7 @@ import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
+import Alert from 'react-bootstrap/Alert';
 import './App.css';
 
 class App extends React.Component {
@@ -11,7 +12,10 @@ class App extends React.Component {
     this.state= {
       searchQuery: '',
       location: {},
-      map: ''
+      map: '',
+      errors: '',
+      showError: true
+         // change this false to true
     }
   }
 
@@ -24,13 +28,23 @@ class App extends React.Component {
     const MAP = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.location.lat},${this.state.location.lon}&zoom=14`;
     const respond = await axios.get(MAP);
     this.setState({map: respond.config.url})
+    this.setState({showError: false})
   }
+  errorTxt(error){
+    this.setState({errors: error.response.respond, showError: true, map: '', location: {}})
+ 
+  }
+
 
 
   render () {
     return (
       <>
       <h1>City Explorer</h1>
+      <Alert show={this.state.showError} variant="warning">Error {this.state.errors}: ERROR
+      <Button variant="warning" onClick={() =>this.setState({showAlert: false})} >close</Button>
+      </Alert>
+      
       {/* <input onChange={(e) => this.setState({searchQuery: e.target.value})}
       placeholder="City name here" type="text" />
       <button onClick={this.getLatLong}>Explore!</button>

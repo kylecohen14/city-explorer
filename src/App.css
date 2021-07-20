@@ -36,3 +36,13 @@
     transform: rotate(360deg);
   }
 } */
+
+Form {
+  background-color: rgba(37, 37, 207, 0.171);
+  font-size: 1.3em;
+  color: rgb(158, 58, 58);
+}
+main {
+  background-color: rgb(28, 59, 121);
+}
+

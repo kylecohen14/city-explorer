@@ -14,26 +14,34 @@ class App extends React.Component {
       location: {},
       map: '',
       errors: '',
-      showError: true
+      showError: false
          // change this false to true
     }
+    this.closeError=this.closeError.bind(this);
+    this.getLatLong=this.getLatLong.bind(this);
   }
 
   getLatLong = async (e) => {
-    e.preventDefault();
-    const API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_EXPLORER}&q=${this.state.searchQuery}&format=json`;
-    const response = await axios.get(API);
-    this.setState({location: response.data[0] })
+    try{
+      e.preventDefault();
+      const API = `https://us1.locationiq.com/v1/search.php?key=${process.env.REACT_APP_CITY_EXPLORER}&q=${this.state.searchQuery}&format=json`;
+      const response = await axios.get(API);
+      this.setState({location: response.data[0] })
 
-    const MAP = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.location.lat},${this.state.location.lon}&zoom=14`;
-    const respond = await axios.get(MAP);
-    this.setState({map: respond.config.url})
-    this.setState({showError: false})
+      const MAP = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.location.lat},${this.state.location.lon}&zoom=14`;
+      const respond = await axios.get(MAP);
+      this.setState({map: respond.config.url})
+   }  catch(error){
+      this.setState({errors: error.response.data.error, showError: true})
+    }
   }
-  errorTxt(error){
-    this.setState({errors: error.response.respond, showError: true, map: '', location: {}})
- 
+
+  closeError = () => {
+    this.setState({showError: false});
   }
+  // errorTxt(error){
+  //   this.setState({errors: error.response.respond, showError: true})
+  // }
 
 
 
@@ -41,8 +49,10 @@ class App extends React.Component {
     return (
       <>
       <h1>City Explorer</h1>
-      <Alert show={this.state.showError} variant="warning">Error {this.state.errors}: ERROR
-      <Button variant="warning" onClick={() =>this.setState({showAlert: false})} >close</Button>
+      <Alert show={this.state.showError} variant="warning">
+      <Alert.Heading>Error Error</Alert.Heading>
+      Error {this.state.errors}: ERROR
+      <Button variant="warning" onClick={this.closeError}>Close</Button>
       </Alert>
       
       {/* <input onChange={(e) => this.setState({searchQuery: e.target.value})}

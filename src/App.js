@@ -17,6 +17,7 @@ class App extends React.Component {
       errors: '',
       showError: false,
       forcastArr: []
+      // spelled wrong
          // change this false to true
     }
     this.closeError=this.closeError.bind(this);
@@ -34,13 +35,14 @@ class App extends React.Component {
       const respond = await axios.get(MAP);
       this.setState({map: respond.config.url})
 
-      const WEATHER = `http://localhost:3232/weather?searchQuery=${this.state.searchQuery}`;
+      const WEATHER = `http://localhost:3232/weather?searchQuery=${this.state.searchQuery}&lat=${this.state.location.lat}&lon=${this.state.location.lon}`;
       const weatherRespond = await axios.get(WEATHER)
       console.log(WEATHER)
       this.setState({forcastArr: weatherRespond.data})
+      // spelled wrong
       console.log(this.state.forcastArr);
    }  catch(error){
-      // this.setState({errors: error.response.data.error, showError: true})
+      this.setState({errors: error.response.data.error, showError: true})
     }
   }
 
@@ -84,6 +86,7 @@ class App extends React.Component {
     )
   }
 }
+// spelled forecast wrong alot
 
 export default App;
 

@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Alert from 'react-bootstrap/Alert';
+import Weather from './Weather';
 import './App.css';
 
 class App extends React.Component {
@@ -14,7 +15,8 @@ class App extends React.Component {
       location: {},
       map: '',
       errors: '',
-      showError: false
+      showError: false,
+      forcastArr: []
          // change this false to true
     }
     this.closeError=this.closeError.bind(this);
@@ -31,8 +33,14 @@ class App extends React.Component {
       const MAP = `https://maps.locationiq.com/v3/staticmap?key=${process.env.REACT_APP_CITY_EXPLORER}&center=${this.state.location.lat},${this.state.location.lon}&zoom=14`;
       const respond = await axios.get(MAP);
       this.setState({map: respond.config.url})
+
+      const WEATHER = `http://localhost:3232/weather?searchQuery=${this.state.searchQuery}`;
+      const weatherRespond = await axios.get(WEATHER)
+      console.log(WEATHER)
+      this.setState({forcastArr: weatherRespond.data})
+      console.log(this.state.forcastArr);
    }  catch(error){
-      this.setState({errors: error.response.data.error, showError: true})
+      // this.setState({errors: error.response.data.error, showError: true})
     }
   }
 
@@ -54,13 +62,6 @@ class App extends React.Component {
       Error {this.state.errors}: ERROR
       <Button variant="warning" onClick={this.closeError}>Close</Button>
       </Alert>
-      
-      {/* <input onChange={(e) => this.setState({searchQuery: e.target.value})}
-      placeholder="City name here" type="text" />
-      <button onClick={this.getLatLong}>Explore!</button>
-      <p>Location name: {this.state.location.display_name}</p>
-      <p>Location latitude: {this.state.location.lat}</p>
-      <p>Location longitude: {this.state.location.lon}</p> */}
       <Form onSubmit={this.getLatLong}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>City Name</Form.Label>
@@ -77,6 +78,8 @@ class App extends React.Component {
         </Button>
       </Form>
       {/* <img src={this.state.map} alt={'map'}></img> */}
+      {this.state.forcastArr.length>0 &&
+      <Weather WEATHER={this.state.forcastArr} searchQuery={this.state.searchQuery}/>}
       </>
     )
   }

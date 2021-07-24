@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image';
 import Alert from 'react-bootstrap/Alert';
 import Weather from './Weather';
+import Movies from './Movies';
 import './App.css';
 
 class App extends React.Component {
@@ -16,7 +17,8 @@ class App extends React.Component {
       map: '',
       errors: '',
       showError: false,
-      forcastArr: []
+      forcastArr: [],
+      moviesArr: []
       // spelled wrong
          // change this false to true
     }
@@ -40,8 +42,12 @@ class App extends React.Component {
       const weatherRespond = await axios.get(WEATHER)
       console.log(WEATHER)
       this.setState({forcastArr: weatherRespond.data})
-      // spelled wrong
-      console.log(this.state.forcastArr);
+
+      const MOVIES = `http://localhost:3232/movies?searchQuery=${this.state.searchQuery}`;
+      // const MOVIES = `https://cityexplorerkyle.herokuapp.com/movies?searchQuery=${this.state.searchQuery}`;
+      const moviesRespond = await axios.get(MOVIES)
+      console.log(MOVIES)
+      this.setState({moviesArr: moviesRespond.data})
    }  catch(error){
       this.setState({errors: error.response.data.error, showError: true})
     }
@@ -83,6 +89,8 @@ class App extends React.Component {
       {/* <img src={this.state.map} alt={'map'}></img> */}
       {this.state.forcastArr.length>0 &&
       <Weather WEATHER={this.state.forcastArr} searchQuery={this.state.searchQuery}/>}
+      {this.state.moviesArr.length>0 &&
+      <Movies MOVIES={this.state.moviesArr} searchQuery={this.state.searchQuery}/>}
       </>
     )
   }

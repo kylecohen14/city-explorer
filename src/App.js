@@ -7,7 +7,7 @@ import CityAppForm from './components/CityAppForm';
 // import Alert from 'react-bootstrap/Alert';
 import Weather from './components/Weather';
 import Movies from './components/Movies';
-import './src/App.css';
+import '/mnt/c/Users/kylec/projects/codefellows/code301/lab_assignments/city-explorer/src/App.css';
 import LocationInfo from './components/LocationInfo';
 
 class App extends React.Component {
